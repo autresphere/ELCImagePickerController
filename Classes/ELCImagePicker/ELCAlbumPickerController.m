@@ -193,20 +193,25 @@
     return newImage;
 }
 
+- (void)showAssetsForAssetGroupAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated
+{
+    ELCAssetTablePicker *picker = [[ELCAssetTablePicker alloc] initWithNibName: nil bundle: nil];
+    picker.parent = self;
+    
+    picker.assetGroup = [self.assetGroups objectAtIndex:indexPath.row];
+    [picker.assetGroup setAssetsFilter:[self assetFilter]];
+    
+    picker.assetPickerFilterDelegate = self.assetPickerFilterDelegate;
+    
+    [self.navigationController pushViewController:picker animated:animated];
+}
+
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	ELCAssetTablePicker *picker = [[ELCAssetTablePicker alloc] initWithNibName: nil bundle: nil];
-	picker.parent = self;
-
-    picker.assetGroup = [self.assetGroups objectAtIndex:indexPath.row];
-    [picker.assetGroup setAssetsFilter:[self assetFilter]];
-    
-	picker.assetPickerFilterDelegate = self.assetPickerFilterDelegate;
-	
-	[self.navigationController pushViewController:picker animated:YES];
+    [self showAssetsForAssetGroupAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
